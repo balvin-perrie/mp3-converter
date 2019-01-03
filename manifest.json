@@ -1,6 +1,6 @@
 {
   "manifest_version": 2,
-  "version": "0.1.0",
+  "version": "0.1.1",
   "name": "MP3 Converter",
   "description": "Pure JavaScript MP3 converter to encode media files into MP3 format",
   "permissions": [
@@ -12,6 +12,7 @@
   "optional_permissions": [
     "*://*/*"
   ],
+  "homepage_url": "http://add0n.com/mp3-converter.html",
   "background": {
     "persistent": false,
     "scripts": [
@@ -28,6 +29,7 @@
     "128": "data/icons/128.png",
     "256": "data/icons/256.png"
   },
+  "offline_enabled": true,
   "browser_action": {
     "default_icon": {
       "16": "data/icons/16.png",

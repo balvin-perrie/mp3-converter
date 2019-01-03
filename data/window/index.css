@@ -34,17 +34,39 @@ input[type=file] {
   font-size: 150%;
   font-weight: 300;
   padding: 30px;
+  overflow: auto;
+  position: relative;
+  cursor: pointer;
 }
 #drag>* {
   margin: 20px 0;
+}
+#drag img {
+  min-height: 64px;
+}
+#clipboard {
+  background: url(clipboard.svg) center center no-repeat;
+  width: 48px;
+  height: 48px;
+  background-size: 40px 40px;
+  position: absolute;
+  top: 10px;
+  right: 10px;
+  margin: 0;
+  outline: none;
+  cursor: pointer;
 }
 #content {
   flex: 1;
   display: flex;
 }
-#content>* {
+#content #drag {
   flex: 1;
 }
+#content #entries {
+  flex: 2;
+}
+
 #entries {
   overflow: auto;
 }

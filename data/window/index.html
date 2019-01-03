@@ -41,10 +41,9 @@
   <div id="content">
     <label id="drag">
       <img src="upload.svg" width="64px">
-      Click to choose media files or alternatively drag the files to start the conversion. By dropping text content, links get extracted.
-
-      <input type="file" multiple id="upload" style="display: none;">
-      <input type="button" id="clipboard" value="Parse content from clipboard">
+      Click to choose files or drag them to start the conversion. Drop text content to extract links
+      <input type="file" multiple id="upload" style="display: none;" accept="audio/*, video/*">
+      <input type="button" id="clipboard" title="Parse content from clipboard">
     </label>
     <div id="entries"></div>
   </div>
