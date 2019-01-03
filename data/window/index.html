@@ -1,0 +1,55 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <meta charset="utf-8">
+  <title>MP3 Converter</title>
+  <link rel="stylesheet" href="index.css">
+</head>
+<body>
+  <header>
+    <h1>MP3 Converter</h1>
+    <select id="bitrate">
+      <option value="24">24 kbps</option>
+      <option value="32">32 kbps</option>
+      <option value="40">40 kbps</option>
+      <option value="48">48 kbps</option>
+      <option value="64">64 kbps</option>
+      <option value="80">80 kbps</option>
+      <option value="96">96 kbps</option>
+      <option value="112">112 kbps</option>
+      <option value="128" selected>128 kbps</option>
+      <option value="160">160 kbps</option>
+      <option value="192">192 kbps</option>
+      <option value="224">224 kbps</option>
+      <option value="256">256 kbps</option>
+      <option value="320">320 kbps</option>
+    </select>
+    <input type="button" id="global-permission" value="Global Fetch Permission (*://*/*)" title="This option allows the extension to get the global read permission; this way you will not get per-domain permission requests anymore">
+  </header>
+  <template id="entry"><div class="entry">
+    <div>
+      <div class="progress" data-filename="Filename" data-filesize="32Mb">
+        <div></div>
+      </div>
+      <input type="button" value="×">
+    </div>
+    <div>
+      <span data-id="info"></span>
+      <span data-id="link">file:///...</span>
+    </div>
+  </div></template>
+  <div id="content">
+    <label id="drag">
+      <img src="upload.svg" width="64px">
+      Click to choose media files or alternatively drag the files to start the conversion. By dropping text content, links get extracted.
+
+      <input type="file" multiple id="upload" style="display: none;">
+      <input type="button" id="clipboard" value="Parse content from clipboard">
+    </label>
+    <div id="entries"></div>
+  </div>
+  <script src="manager.js"></script>
+  <script src="mp3/api.js"></script>
+  <script src="index.js"></script>
+</body>
+</html>
