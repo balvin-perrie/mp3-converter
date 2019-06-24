@@ -65,6 +65,8 @@ input[type=file] {
 }
 #content #entries {
   flex: 2;
+  overflow: auto;
+  height: 100%;
 }
 
 #entries {

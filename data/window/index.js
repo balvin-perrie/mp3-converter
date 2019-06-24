@@ -14,7 +14,15 @@ manager.on('closed', e => {
 });
 manager.on('added', e => {
   const {type, link} = e.file;
-  if (type.startsWith('audio/') || type.startsWith('video/')) {
+
+  if (
+    type.startsWith('audio/') ||
+    type.startsWith('video/') ||
+    [
+      'avi', 'mp4', 'webm', 'flv', 'mov', 'ogv', '3gp', 'mpg', 'wmv', 'swf', 'mkv',
+      'pcm', 'wav', 'aac', 'ogg', 'wma', 'flac', 'mid', 'mka', 'm4a', 'voc'
+    ].some(e => link.indexOf(e) !== -1)
+  ) {
     const bitrate = Number(document.getElementById('bitrate').value);
     if (link) {
       e.message('downloading');
@@ -62,4 +70,12 @@ if (args.has('link')) {
 document.getElementById('global-permission').addEventListener('click', () => chrome.permissions.request({
   permissions: [],
   origins: ['*://*/*']
+}));
+
+// init
+chrome.storage.local.get({
+  'bitrate': 128
+}, prefs => document.getElementById('bitrate').value = prefs.bitrate);
+document.getElementById('bitrate').addEventListener('change', e => chrome.storage.local.set({
+  'bitrate': e.target.value
 }));

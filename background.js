@@ -72,8 +72,8 @@ chrome.browserAction.onClicked.addListener(() => onClicked());
       id: 'convert-link',
       contexts: ['link'],
       targetUrlPatterns: [
-        'avi', 'mp4', 'webm', 'flv', 'mov', 'ogv', '3gp',
-        'pcm', 'wav', 'aac', 'ogg', 'wma'
+        'avi', 'mp4', 'webm', 'flv', 'mov', 'ogv', '3gp', 'mpg', 'wmv', 'swf', 'mkv',
+        'pcm', 'wav', 'aac', 'ogg', 'wma', 'flac', 'mid', 'mka', 'm4a', 'voc'
       ].map(a => '*://*/*.' + a)
     });
   };
