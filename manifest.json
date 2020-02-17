@@ -1,8 +1,8 @@
 {
   "manifest_version": 2,
-  "version": "0.1.2",
+  "version": "0.1.4",
   "name": "MP3 Converter",
-  "description": "Pure JavaScript MP3 converter to encode media files into MP3 format",
+  "description": "Pure JavaScript MP3 converter to encode media files into MP3 format and add ID3 Tags",
   "permissions": [
     "downloads",
     "storage",
@@ -12,7 +12,7 @@
   "optional_permissions": [
     "*://*/*"
   ],
-  "homepage_url": "http://add0n.com/mp3-converter.html",
+  "homepage_url": "https://add0n.com/mp3-converter.html",
   "background": {
     "persistent": false,
     "scripts": [

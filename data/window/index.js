@@ -1,7 +1,37 @@
-/* globals mp3, manager */
+/* globals mp3, manager, ID3Writer */
 'use strict';
 
-var args = new URLSearchParams(location.search);
+const args = new URLSearchParams(location.search);
+const tags = {};
+
+document.getElementById('add-id3').addEventListener('click', () => {
+  const select = document.getElementById('select-id3');
+  const option = select.selectedOptions[0];
+  const type = option.getAttribute('type');
+  if (type === 'picture') {
+    const input = document.createElement('input');
+    input.type = 'file';
+    input.accept = 'image/*';
+    input.onchange = () => {
+      const reader = new FileReader();
+      reader.onloadend = () => {
+        tags[option.value] = reader.result;
+      };
+      reader.readAsArrayBuffer(input.files[0]);
+    };
+    input.click();
+  }
+  else {
+    const msg = (type === 'array' ? 'Comma-separated list of ' : 'Value for ') + option.text + ' ' + ` (type ${type})`;
+    const value = window.prompt(msg, tags[option.value]);
+    if (value) {
+      tags[option.value] = value;
+    }
+    else {
+      delete tags[option.value];
+    }
+  }
+});
 
 manager.on('closed', e => {
   if (e.object.worker) {
@@ -14,6 +44,47 @@ manager.on('closed', e => {
 });
 manager.on('added', e => {
   const {type, link} = e.file;
+  e.then = async blob => {
+    // id3
+    const keys = Object.keys(tags);
+    if (keys.length) {
+      const ab = await blob.arrayBuffer();
+      const writer = new ID3Writer(ab);
+      for (const key of keys) {
+        // arrays
+        if (['TPE1', 'TCOM', 'TCON'].indexOf(key) !== -1) {
+          writer.setFrame(key, tags[key].split(',').map(s => s.trim()).filter((s, i, l) => s && l.indexOf(s) === i));
+        }
+        else if (key === 'APIC') {
+          writer.setFrame('APIC', {
+            type: 3,
+            data: tags['APIC'],
+            description: 'Cover Image'
+          });
+          console.log(tags['APIC']);
+        }
+        else {
+          if (['TLEN', 'TDAT', 'TYER', 'TBPM'].indexOf('key') === -1) {
+            writer.setFrame(key, tags[key]);
+          }
+          else {
+            writer.setFrame(key, Number(tags[key]));
+          }
+        }
+      }
+      writer.addTag();
+      blob = writer.getBlob();
+    }
+
+    const url = URL.createObjectURL(blob);
+    chrome.downloads.download({
+      filename: e.file.name.replace(/\.[^.]*/, '') + '.mp3',
+      url
+    }, id => {
+      window.setTimeout(() => URL.revokeObjectURL(url), 10000);
+      e.downloadId(id);
+    });
+  };
 
   if (
     type.startsWith('audio/') ||
@@ -50,7 +121,7 @@ manager.on('added', e => {
   }
 });
 
-var port = chrome.runtime.connect({
+const port = chrome.runtime.connect({
   name: 'window'
 });
 port.onMessage.addListener(request => {

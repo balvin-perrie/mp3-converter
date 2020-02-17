@@ -1,6 +1,6 @@
 'use strict';
 
-var ports = [];
+const ports = [];
 
 chrome.runtime.onConnect.addListener(port => {
   ports.push(port);
@@ -10,7 +10,7 @@ chrome.runtime.onConnect.addListener(port => {
   });
 });
 
-var permission = links => {
+const permission = links => {
   const origins = [];
   links.forEach(link => {
     try {
@@ -26,8 +26,9 @@ var permission = links => {
     resolve(g);
   }));
 };
+window.permission = permission; // access from window
 
-var onClicked = link => {
+const onClicked = link => {
   if (ports.length) {
     if (link) {
       ports[0].postMessage({

@@ -33,15 +33,7 @@ mp3.convert = (buffer, bitrate = 256, obj) => {
         obj.progress(e.data.value);
       }
       else if (method === 'mp3') {
-        obj.done();
-        const url = URL.createObjectURL(e.data.blob);
-        chrome.downloads.download({
-          filename: obj.file.name.replace(/\.[^.]*/, '') + '.mp3',
-          url
-        }, id => {
-          window.setTimeout(() => URL.revokeObjectURL(url), 10000);
-          obj.downloadId(id);
-        });
+        obj.done(e.data.blob);
       }
     };
     worker.postMessage(msg);

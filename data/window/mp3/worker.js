@@ -12,7 +12,7 @@ onmessage = function(e) {
     const sampleBlockSize = 1152; // can be anything but make it a multiple of 576 to make encoders life easier
 
     const mp3Data = [];
-    for (var i = 0; i < length; i += sampleBlockSize) {
+    for (let i = 0; i < length; i += sampleBlockSize) {
       postMessage({
         method: 'progress',
         value: i / length * 100

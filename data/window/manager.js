@@ -1,17 +1,18 @@
 'use strict';
 
-var manager = {
+const manager = {
   events: {
     closed: [],
     added: []
   }
 };
+window.manager = manager;
 
-var permission = links => new Promise(resolve => {
+const permission = links => new Promise(resolve => {
   chrome.runtime.getBackgroundPage(b => b.permission(links).then(resolve));
 });
 
-var extract = content => {
+const extract = content => {
   const r = /(\b(https?|ftp|file):\/\/[-A-Z0-9+&@#\\/%?=~_|!:,.;]*[-A-Z0-9+&@#\\/%=~_|])/gi;
   return (content.match(r) || []) .map(s => s.replace(/&amp;/g, '&'))
     .filter(href => href).filter((s, i, l) => l.indexOf(s) === i);
@@ -27,7 +28,7 @@ manager.add = async files => {
       return bytes + ' B';
     }
     const units = ['kB', 'MB', 'GB', 'TB', 'PB', 'EB', 'ZB', 'YB'];
-    var u = -1;
+    let u = -1;
     do {
       bytes /= 1024;
       ++u;
@@ -155,9 +156,8 @@ document.querySelector('#drag input[type=button]').addEventListener('click', () 
   });
 });
 {
-  const drag = document.getElementById('drag');
-  drag.addEventListener('dragover', e => e.preventDefault());
-  drag.addEventListener('drop', e => {
+  document.addEventListener('dragover', e => e.preventDefault());
+  document.addEventListener('drop', e => {
     e.preventDefault();
     e.stopPropagation();
     if (e.dataTransfer.files.length) {
@@ -212,18 +212,21 @@ manager.build = (filename, filesize, url) => {
   }
 
   const rtn = {
-    progress: p => {
+    progress(p) {
       div.style.width = p + '%';
     },
-    done: () => {
+    done(blob) {
       div.dataset.done = true;
+      if (this.then) {
+        this.then(blob);
+      }
     },
-    error: msg => {
+    error(msg) {
       div.dataset.error = true;
       progress.title = progress.dataset.filesize = msg || 'Error';
       info.textContent = '';
     },
-    message: msg => {
+    message(msg) {
       info.textContent = msg;
     },
     size: s => progress.dataset.filesize = s,

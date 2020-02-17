@@ -1,11 +1,11 @@
 body {
   background-color: #f1f5f7;
-  font-family: "Helvetica Neue",Helvetica,sans-serif;
+  font-family: "Helvetica Neue", Helvetica, sans-serif;
   font-size: 13px;
   display: flex;
   flex-direction: column;
-  margin: 0 0 20px 0;
-  height: calc(100vh - 20px);
+  margin: 0;
+  height: 100vh;
 }
 h1 {
   font-weight: 300;
@@ -16,17 +16,18 @@ header {
   display: flex;
   align-items: center;
 }
+select,
 input[type=file] {
   outline: none;
 }
-#bitrate {
-  margin-right: 10px;
+select {
+  max-width: 120px;
 }
+
 #drag {
   margin: 10px;
   background-color: whitesmoke;
   border: dashed 2px #aaabab;
-  box-shadow: 0 0 0 10px #fff;
   display: flex;
   flex-direction: column;
   align-items: center;
@@ -37,12 +38,22 @@ input[type=file] {
   overflow: auto;
   position: relative;
   cursor: pointer;
+  text-align: center;
 }
-#drag>* {
+#drag > * {
   margin: 20px 0;
 }
 #drag img {
   min-height: 64px;
+}
+@media screen and (max-width: 600px) {
+  #drag {
+    justify-content: flex-end;
+    min-height: 100px;
+  }
+  #drag img {
+    display: none;
+  }
 }
 #clipboard {
   background: url(clipboard.svg) center center no-repeat;
@@ -54,11 +65,18 @@ input[type=file] {
   right: 10px;
   margin: 0;
   outline: none;
+  border: none;
   cursor: pointer;
 }
 #content {
   flex: 1;
   display: flex;
+  overflow: auto;
+}
+@media screen and (max-width: 600px) {
+  #content {
+    flex-direction: column;
+  }
 }
 #content #drag {
   flex: 1;
@@ -68,9 +86,39 @@ input[type=file] {
   overflow: auto;
   height: 100%;
 }
-
+#tools {
+  background-color: #fff;
+  display: grid;
+  grid-template-columns: 1fr 1fr 1fr;
+}
+@media screen and (max-width: 600px) {
+  #tools {
+    grid-template-columns: 1fr;
+  }
+}
+#tools label {
+  white-space: nowrap;
+  height: 32px;
+  line-height: 32px;
+  display: inline-block;
+  padding: 0 10px;
+}
+#tools label:not(:last-child) {
+  border-right: solid 1px #f1f5f7;
+}
+#tools input[type=button] {
+  border: none;
+  background-color: #f5f5f5;
+  outline: none;
+}
 #entries {
   overflow: auto;
+  margin-top: 10px;
+}
+@media screen and (max-width: 600px) {
+  #entries {
+    margin-top: 0;
+  }
 }
 #entries:empty {
   display: none;
@@ -93,7 +141,7 @@ input[type=file] {
 .entry input[type=button]:active {
   opacity: 0.5;
 }
-.entry>div {
+.entry > div {
   display: flex;
   flex-direction: row;
 }
