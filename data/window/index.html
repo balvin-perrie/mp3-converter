@@ -8,62 +8,6 @@
 </head>
 <body>
   <div id="explore" data-cols=5></div>
-  <header>
-    <h1>MP3 Converter</h1>
-  </header>
-  <div id="tools">
-    <label>Quality <select id="bitrate">
-          <option value="24">24 kbps</option>
-          <option value="32">32 kbps</option>
-          <option value="40">40 kbps</option>
-          <option value="48">48 kbps</option>
-          <option value="64">64 kbps</option>
-          <option value="80">80 kbps</option>
-          <option value="96">96 kbps</option>
-          <option value="112">112 kbps</option>
-          <option value="128" selected>128 kbps</option>
-          <option value="160">160 kbps</option>
-          <option value="192">192 kbps</option>
-          <option value="224">224 kbps</option>
-          <option value="256">256 kbps</option>
-          <option value="320">320 kbps</option>
-        </select></label>
-        <label><input type="button" id="add-id3" value="Add"> <select id="select-id3">
-          <option value="APIC" type="picture">cover image</option>
-          <option value="TPE1" type="array">song artists</option>
-          <option value="TCOM" type="array">song composers</option>
-          <option value="TCON" type="array">song genres</option>
-          <option value="TLAN" type="string">language</option>
-          <option value="TIT1" type="string">content group description</option>
-          <option value="TIT2" type="string">song title</option>
-          <option value="TIT3" type="string">song subtitle</option>
-          <option value="TALB" type="string">album title</option>
-          <option value="TPE2" type="string">album artist</option>
-          <option value="TPE3" type="string">conductor/performer refinement</option>
-          <option value="TPE4" type="string">interpreted, remixed, or otherwise modified by</option>
-          <option value="TRCK" type="string">song number in album): '5' or '5/10</option>
-          <option value="TPOS" type="string">album disc number): '1' or '1/3</option>
-          <option value="TPUB" type="string">label name</option>
-          <option value="TKEY" type="string">initial key</option>
-          <option value="TMED" type="string">media type</option>
-          <option value="TSRC" type="string">isrc - international standard recording code</option>
-          <option value="TCOP" type="string">copyright message</option>
-          <option value="TEXT" type="string">lyricist / text writer</option>
-          <option value="WCOM" type="string">commercial information</option>
-          <option value="WCOP" type="string">copyright/Legal information</option>
-          <option value="WOAF" type="string">official audio file webpage</option>
-          <option value="WOAR" type="string">official artist/performer webpage</option>
-          <option value="WOAS" type="string">official audio source webpage</option>
-          <option value="WORS" type="string">official internet radio station homepage</option>
-          <option value="WPAY" type="string">payment</option>
-          <option value="WPUB" type="string">publishers official webpage</option>
-          <option value="TLEN" type="number">song duration in milliseconds</option>
-          <option value="TDAT" type="number">album release date expressed as DDMM</option>
-          <option value="TYER" type="number">album release year</option>
-          <option value="TBPM" type="number">beats per minute</option>
-        </select> ID3 Tag</label>
-        <label title="This option allows the extension to get the global read permission; this way you will not get per-domain permission requests anymore"><input type="button" id="global-permission" value="Allow"> global downloading</label>
-  </div>
   <template id="entry"><div class="entry">
     <div>
       <div class="progress" data-filename="Filename" data-filesize="32Mb">
@@ -84,6 +28,67 @@
       <input type="button" id="clipboard" title="Parse content from clipboard">
     </label>
     <div id="entries"></div>
+  </div>
+  <div id="tools">
+    <label id="quality">Quality <select id="bitrate">
+        <option value="24">24 kbps</option>
+        <option value="32">32 kbps</option>
+        <option value="40">40 kbps</option>
+        <option value="48">48 kbps</option>
+        <option value="64">64 kbps</option>
+        <option value="80">80 kbps</option>
+        <option value="96">96 kbps</option>
+        <option value="112">112 kbps</option>
+        <option value="128" selected>128 kbps</option>
+        <option value="160">160 kbps</option>
+        <option value="192">192 kbps</option>
+        <option value="224">224 kbps</option>
+        <option value="256">256 kbps</option>
+        <option value="320">320 kbps</option>
+      </select>
+    </label>
+    <label title="This option allows the extension to get the global read permission; this way you will not get per-domain permission requests anymore">
+      <input type="button" id="global-permission" value="Allow">
+      <span>global downloading</span>
+    </label>
+    <label>
+      <input type="button" id="add-id3" value="Add">
+      <select id="select-id3">
+        <option value="APIC" type="picture">cover image</option>
+        <option value="TPE1" type="array">song artists</option>
+        <option value="TCOM" type="array">song composers</option>
+        <option value="TCON" type="array">song genres</option>
+        <option value="TLAN" type="string">language</option>
+        <option value="TIT1" type="string">content group description</option>
+        <option value="TIT2" type="string">song title</option>
+        <option value="TIT3" type="string">song subtitle</option>
+        <option value="TALB" type="string">album title</option>
+        <option value="TPE2" type="string">album artist</option>
+        <option value="TPE3" type="string">conductor/performer refinement</option>
+        <option value="TPE4" type="string">interpreted, remixed, or otherwise modified by</option>
+        <option value="TRCK" type="string">song number in album): '5' or '5/10</option>
+        <option value="TPOS" type="string">album disc number): '1' or '1/3</option>
+        <option value="TPUB" type="string">label name</option>
+        <option value="TKEY" type="string">initial key</option>
+        <option value="TMED" type="string">media type</option>
+        <option value="TSRC" type="string">isrc - international standard recording code</option>
+        <option value="TCOP" type="string">copyright message</option>
+        <option value="TEXT" type="string">lyricist / text writer</option>
+        <option value="WCOM" type="string">commercial information</option>
+        <option value="WCOP" type="string">copyright/Legal information</option>
+        <option value="WOAF" type="string">official audio file webpage</option>
+        <option value="WOAR" type="string">official artist/performer webpage</option>
+        <option value="WOAS" type="string">official audio source webpage</option>
+        <option value="WORS" type="string">official internet radio station homepage</option>
+        <option value="WPAY" type="string">payment</option>
+        <option value="WPUB" type="string">publishers official webpage</option>
+        <option value="TLEN" type="number">song duration in milliseconds</option>
+        <option value="TDAT" type="number">album release date expressed as DDMM</option>
+        <option value="TYER" type="number">album release year</option>
+        <option value="TBPM" type="number">beats per minute</option>
+      </select>
+      <span>ID3 Tag</span>
+    </label>
   </div>
   <script src="manager.js"></script>
   <script src="mp3/api.js"></script>
