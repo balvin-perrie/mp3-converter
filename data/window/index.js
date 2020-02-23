@@ -61,7 +61,6 @@ manager.on('added', e => {
             data: tags['APIC'],
             description: 'Cover Image'
           });
-          console.log(tags['APIC']);
         }
         else {
           if (['TLEN', 'TDAT', 'TYER', 'TBPM'].indexOf('key') === -1) {
@@ -101,7 +100,7 @@ manager.on('added', e => {
         if (err) {
           return e.error(err.messsage);
         }
-        e.message('converting');
+        e.message('decoding');
         e.worker = mp3.convert(buffer, bitrate, e);
       });
     }
@@ -109,7 +108,7 @@ manager.on('added', e => {
       e.message('reading');
       const reader = new FileReader();
       reader.onload = () => {
-        e.message('converting');
+        e.message('decoding');
         e.worker = mp3.convert(reader.result, bitrate, e);
       };
       reader.onerror = m => e.error(m.message);

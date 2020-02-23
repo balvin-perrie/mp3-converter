@@ -1,6 +1,6 @@
 {
   "manifest_version": 2,
-  "version": "0.1.5",
+  "version": "0.1.6",
   "name": "MP3 Converter",
   "description": "Pure JavaScript MP3 converter to encode media files into MP3 format and add ID3 Tags",
   "permissions": [

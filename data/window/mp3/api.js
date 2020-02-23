@@ -1,6 +1,6 @@
 'use strict';
 
-var mp3 = {};
+const mp3 = {};
 mp3.fetch = (url, callback) => {
   const controller = new AbortController();
   fetch(url, {
@@ -15,6 +15,7 @@ mp3.convert = (buffer, bitrate = 256, obj) => {
   const audioCtx = new (window.AudioContext || window.webkitAudioContext)();
 
   audioCtx.decodeAudioData(buffer, buffer => {
+    obj.message('encoding');
     const channels = buffer.numberOfChannels;
     const msg = {
       method: 'convert'
@@ -22,9 +23,10 @@ mp3.convert = (buffer, bitrate = 256, obj) => {
     msg.channels = channels;
     msg.sampleRate = buffer.sampleRate;
     msg.length = buffer.length;
+
     msg.left = buffer.getChannelData(0);
     msg.bitrate = bitrate;
-    if (channels === 2) {
+    if (channels > 1) {
       msg.right = buffer.getChannelData(1);
     }
     worker.onmessage = e => {
@@ -41,3 +43,4 @@ mp3.convert = (buffer, bitrate = 256, obj) => {
 
   return worker;
 };
+window.mp3 = mp3;
