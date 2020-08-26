@@ -43,7 +43,7 @@ manager.on('closed', e => {
   e.object.closed = true; // in case we are in the fetch level
 });
 manager.on('added', e => {
-  const {type, link} = e.file;
+  const {type, link, name} = e.file;
   e.then = async blob => {
     // id3
     const keys = Object.keys(tags);
@@ -84,14 +84,13 @@ manager.on('added', e => {
       e.downloadId(id);
     });
   };
-
   if (
     type.startsWith('audio/') ||
     type.startsWith('video/') ||
     [
       'avi', 'mp4', 'webm', 'flv', 'mov', 'ogv', '3gp', 'mpg', 'wmv', 'swf', 'mkv',
       'pcm', 'wav', 'aac', 'ogg', 'wma', 'flac', 'mid', 'mka', 'm4a', 'voc'
-    ].some(e => link.indexOf(e) !== -1)
+    ].some(e => (link && link.indexOf(e) !== -1) || (name && name.indexOf(e) !== -1))
   ) {
     const bitrate = Number(document.getElementById('bitrate').value);
     if (link) {
@@ -141,6 +140,14 @@ document.getElementById('global-permission').addEventListener('click', () => chr
   permissions: [],
   origins: ['*://*/*']
 }));
+chrome.permissions.contains({
+  permissions: [],
+  origins: ['*://*/*']
+}, granted => {
+  if (granted) {
+    document.getElementById('tools').dataset.count = '2';
+  }
+});
 
 // init
 chrome.storage.local.get({

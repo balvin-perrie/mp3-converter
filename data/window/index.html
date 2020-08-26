@@ -47,7 +47,7 @@
         <option value="320">320 kbps</option>
       </select>
     </label>
-    <label title="This option allows the extension to get the global read permission; this way you will not get per-domain permission requests anymore">
+    <label id="permission" title="This option allows the extension to get the global read permission; this way you will not get per-domain permission requests anymore">
       <input type="button" id="global-permission" value="Allow">
       <span>global downloading</span>
     </label>
@@ -90,6 +90,7 @@
       <span>ID3 Tag</span>
     </label>
   </div>
+  <iframe src="mp3/decoder/index.html" id="ffmpeg"></iframe>
   <script src="manager.js"></script>
   <script src="mp3/api.js"></script>
   <script src="mp3/vendor/browser-id3-writer.4.0.0.js"></script>

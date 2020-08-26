@@ -1,13 +1,12 @@
 {
   "manifest_version": 2,
-  "version": "0.1.6",
+  "version": "0.2.0",
   "name": "MP3 Converter",
   "description": "Pure JavaScript MP3 converter to encode media files into MP3 format and add ID3 Tags",
   "permissions": [
     "downloads",
     "storage",
-    "contextMenus",
-    "clipboardRead"
+    "contextMenus"
   ],
   "optional_permissions": [
     "*://*/*"
@@ -17,6 +16,11 @@
     "persistent": false,
     "scripts": [
       "background.js"
+    ]
+  },
+  "sandbox": {
+    "pages": [
+      "data/window/mp3/decoder/index.html"
     ]
   },
   "icons": {

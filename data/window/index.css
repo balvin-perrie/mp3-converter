@@ -77,14 +77,16 @@ input[type=file] {
   display: grid;
   grid-template-columns: repeat(3, minmax(calc(100vw / 3), 1fr));
 }
+#tools[data-count="2"] {
+  grid-template-columns: repeat(2, minmax(calc(100vw / 2), 1fr));
+}
+#tools[data-count="2"] #permission {
+  display: none;
+}
 @media screen and (max-width: 600px) {
   #tools {
-    grid-template-columns: repeat(2, minmax(calc(100vw / 2), 1fr));
+    grid-template-columns: 1fr !important;
     max-width: 100%;
-  }
-  #quality {
-    grid-column: 2;
-    grid-row: 2;
   }
 }
 #tools label {
@@ -220,4 +222,8 @@ input[type=file] {
   color: #464646;
   overflow: hidden;
   text-overflow: ellipsis;
+}
+
+#ffmpeg {
+  display: none;
 }
