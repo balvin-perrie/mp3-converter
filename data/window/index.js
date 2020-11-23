@@ -46,33 +46,38 @@ manager.on('added', e => {
   const {type, link, name} = e.file;
   e.then = async blob => {
     // id3
-    const keys = Object.keys(tags);
-    if (keys.length) {
-      const ab = await blob.arrayBuffer();
-      const writer = new ID3Writer(ab);
-      for (const key of keys) {
-        // arrays
-        if (['TPE1', 'TCOM', 'TCON'].indexOf(key) !== -1) {
-          writer.setFrame(key, tags[key].split(',').map(s => s.trim()).filter((s, i, l) => s && l.indexOf(s) === i));
-        }
-        else if (key === 'APIC') {
-          writer.setFrame('APIC', {
-            type: 3,
-            data: tags['APIC'],
-            description: 'Cover Image'
-          });
-        }
-        else {
-          if (['TLEN', 'TDAT', 'TYER', 'TBPM'].indexOf('key') === -1) {
-            writer.setFrame(key, tags[key]);
+    try {
+      const keys = Object.keys(tags);
+      if (keys.length) {
+        const ab = await blob.arrayBuffer();
+        const writer = new ID3Writer(ab);
+        for (const key of keys) {
+          // arrays
+          if (['TPE1', 'TCOM', 'TCON'].indexOf(key) !== -1) {
+            writer.setFrame(key, tags[key].split(',').map(s => s.trim()).filter((s, i, l) => s && l.indexOf(s) === i));
+          }
+          else if (key === 'APIC') {
+            writer.setFrame('APIC', {
+              type: 3,
+              data: tags['APIC'],
+              description: 'Cover Image'
+            });
           }
           else {
-            writer.setFrame(key, Number(tags[key]));
+            if (['TLEN', 'TDAT', 'TYER', 'TBPM'].indexOf('key') === -1) {
+              writer.setFrame(key, tags[key]);
+            }
+            else {
+              writer.setFrame(key, Number(tags[key]));
+            }
           }
         }
+        writer.addTag();
+        blob = writer.getBlob();
       }
-      writer.addTag();
-      blob = writer.getBlob();
+    }
+    catch (e) {
+      console.warn('ID3 skipped', e);
     }
 
     const url = URL.createObjectURL(blob);
@@ -139,6 +144,10 @@ if (args.has('link')) {
 document.getElementById('global-permission').addEventListener('click', () => chrome.permissions.request({
   permissions: [],
   origins: ['*://*/*']
+}, granted => {
+  if (granted) {
+    document.getElementById('tools').dataset.count = '2';
+  }
 }));
 chrome.permissions.contains({
   permissions: [],

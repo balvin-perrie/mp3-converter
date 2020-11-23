@@ -15,7 +15,7 @@ input[type=file] {
 #drag {
   margin: 15px;
   background-color: whitesmoke;
-  border: dotted 2px #aaabab;
+  border: dashed 1px #aaabab;
   display: flex;
   flex-direction: column;
   align-items: center;

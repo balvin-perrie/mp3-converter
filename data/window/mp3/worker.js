@@ -7,6 +7,12 @@ let percent = -2;
 onmessage = function(e) {
   const {method, length, left, right, channels, sampleRate, bitrate} = e.data;
 
+  // find max value
+  const max = Math.max(
+    left.reduce((p, c) => Math.abs(c) > p ? Math.abs(c) : p, 1),
+    right ? right.reduce((p, c) => Math.abs(c) > p ? Math.abs(c) : p, 1) : 1
+  );
+
   if (method === 'convert') {
     const mp3encoder = new lamejs.Mp3Encoder(channels, sampleRate, bitrate);
 
@@ -24,12 +30,17 @@ onmessage = function(e) {
       }
 
       let mp3buf;
-      const leftChunk = Int16Array.from(left.subarray(i, i + sampleBlockSize), a => a * (a < 0 ? 0x8000 : 0x7FFF));
+
+      const convert = n => {
+        return n < 0 ? n / max * 32768 : n / max * 32767; // convert in range [-32768, 32767]
+      };
+      const leftChunk = Int16Array.from(left.subarray(i, i + sampleBlockSize), convert);
+      // const leftChunk = Int16Array.from(left.subarray(i, i + sampleBlockSize), a => a * (a < 0 ? 0x8000 : 0x7FFF));
       if (channels === 1) {
         mp3buf = mp3encoder.encodeBuffer(leftChunk);
       }
       else {
-        const rightChunk = Int16Array.from(right.subarray(i, i + sampleBlockSize), a => a * (a < 0 ? 0x8000 : 0x7FFF));
+        const rightChunk = Int16Array.from(right.subarray(i, i + sampleBlockSize), convert);
         mp3buf = mp3encoder.encodeBuffer(leftChunk, rightChunk);
       }
       if (mp3buf.length > 0) {

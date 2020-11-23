@@ -33,17 +33,16 @@ const next = () => {
     return;
   }
 
+  parent.postMessage({
+    method: 'message',
+    value: 'decoding by FFmpeg',
+    id: data.id
+  }, '*');
+
   next.ready = false;
   window.Module.ready().then(async () => {
     const name = Math.random().toString(36).substring(7);
     window.FS.writeFile(name, new Uint8Array(data.buffer));
-
-    parent.postMessage({
-      method: 'message',
-      value: 'decoding by FFmpeg',
-      id: data.id
-    }, '*');
-
     meta = {};
     try {
       decoder(name);
