@@ -9,7 +9,10 @@ const manager = {
 window.manager = manager;
 
 const permission = links => new Promise(resolve => {
-  chrome.runtime.getBackgroundPage(b => b.permission(links).then(resolve));
+  chrome.runtime.sendMessage({
+    method: 'permission',
+    links
+  }, resolve);
 });
 
 const extract = content => {
