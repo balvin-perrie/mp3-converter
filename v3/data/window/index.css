@@ -1,0 +1,227 @@
+body {
+  background-color: #f1f5f7;
+  color: #000;
+  font-family: "Helvetica Neue", Helvetica, sans-serif;
+  font-size: 13px;
+  display: flex;
+  flex-direction: column;
+  margin: 0;
+  height: 100vh;
+}
+select,
+input[type=file] {
+  outline: none;
+}
+#drag {
+  background-color: whitesmoke;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  padding: 30px;
+  overflow: auto;
+  position: relative;
+  cursor: pointer;
+  text-align: center;
+}
+#drag > * {
+  margin: 20px 0;
+}
+#drag img {
+  min-height: 64px;
+}
+@media screen and (max-width: 600px) {
+  #drag {
+    justify-content: flex-end;
+    min-height: 100px;
+  }
+  #drag img {
+    display: none;
+  }
+}
+#clipboard {
+  background: url(clipboard.svg) center center no-repeat;
+  width: 48px;
+  height: 48px;
+  background-size: 48px 48px;
+  position: absolute;
+  top: 10px;
+  left: 5px;
+  margin: 0;
+  outline: none;
+  border: none;
+  cursor: pointer;
+}
+#content {
+  flex: 1;
+  display: flex;
+  overflow: auto;
+}
+@media screen and (max-width: 600px) {
+  #content {
+    flex-direction: column;
+  }
+}
+#content #drag {
+  flex: 1;
+}
+#content #entries {
+  flex: 2;
+  overflow: auto;
+  height: 100%;
+}
+#tools {
+  background-color: #fff;
+  display: grid;
+  grid-template-columns: repeat(3, minmax(calc(100vw / 3), 1fr));
+}
+#tools[data-count="2"] {
+  grid-template-columns: repeat(2, minmax(calc(100vw / 2), 1fr));
+}
+#tools[data-count="2"] #permission {
+  display: none;
+}
+@media screen and (max-width: 600px) {
+  #tools {
+    grid-template-columns: 1fr !important;
+    max-width: 100%;
+  }
+}
+#tools label {
+  white-space: nowrap;
+  height: 48px;
+  display: inline-flex;
+  align-items: center;
+  padding: 0 10px;
+}
+#tools label span {
+  overflow: hidden;
+  text-overflow: ellipsis;
+}
+#tools label:not(:last-child) {
+  border-right: solid 1px #f1f5f7;
+}
+#tools input[type=button] {
+  border: none;
+  background-color: #f5f5f5;
+  outline: none;
+  height: 28px;
+  margin-right: 10px;
+  cursor: pointer;
+  padding: 0 10px;
+}
+@media screen and (max-width: 600px) {
+  #tools label {
+    height: 38px;
+  }
+}
+#tools select {
+  height: 100%;
+  border: none;
+  border-radius: 0;
+  background-color: #fff;
+  flex: 1;
+  width: 100%;
+  -moz-appearance: button;
+  outline: none;
+  overflow: hidden;
+  text-overflow: ellipsis;
+}
+#tools select:-moz-focusring {
+  color: transparent;
+  text-shadow: 0 0 0 #000;
+}
+#entries {
+  overflow: auto;
+  margin-top: 10px;
+}
+@media screen and (max-width: 600px) {
+  #entries {
+    margin-top: 0;
+  }
+}
+#entries:empty {
+  display: none;
+}
+.entry {
+  display: flex;
+  flex-direction: column;
+  padding: 0 5px;
+  margin: 0 10px 2px 10px;
+  background-color: #e0e7eb;
+}
+.entry input[type=button] {
+  background-color: transparent;
+  border: none;
+  font-size: 24px;
+  margin-right: -5px;
+  outline: none;
+  cursor: pointer;
+}
+.entry input[type=button]:active {
+  opacity: 0.5;
+}
+.entry > div {
+  display: flex;
+  flex-direction: row;
+}
+.entry .progress {
+  background: transparent;
+  position: relative;
+  display: flex;
+  flex: 1;
+  align-items: center;
+  overflow: hidden;
+}
+.entry .progress::before,
+.entry .progress::after {
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+}
+.entry .progress::before {
+  content: attr(data-filename);
+  z-index: 1;
+  font-weight: bold;
+  margin-left: 5px;
+}
+.entry .progress::after {
+  content: attr(data-filesize);
+  z-index: 1;
+  margin-left: 10px;
+}
+.entry .progress div {
+  background-color: whitesmoke;
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 0%;
+  height: calc(100% - 4px);
+  border-top: solid 2px #e0e7eb;
+  pointer-events: none;
+}
+.entry .progress div[data-done] {
+  width: 100% !important;
+  background-color: #bbf9bb;
+}
+.entry .progress div[data-error] {
+  width: 100% !important;
+  background-color: #ff9898;
+}
+.entry .progress[data-download-id] {
+  cursor: pointer;
+}
+.entry span[data-id=info] {
+  margin-right: 10px;
+}
+.entry span[data-id=link] {
+  padding-bottom: 5px;
+  font-style: italic;
+  color: #464646;
+  overflow: hidden;
+  text-overflow: ellipsis;
+}
+
+#ffmpeg {
+  display: none;
+}
