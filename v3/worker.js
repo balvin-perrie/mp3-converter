@@ -1,7 +1,3 @@
-'use strict';
-
-self.importScripts('v2.js');
-
 const permission = links => {
   const origins = [];
   links.forEach(link => {
@@ -85,7 +81,7 @@ chrome.runtime.onMessage.addListener((request, sender) => {
     chrome.contextMenus.create({
       title: 'Open a Sample',
       id: 'sample',
-      contexts: ['browser_action', 'action']
+      contexts: ['action']
     });
     chrome.contextMenus.create({
       title: 'Convert to MP3',

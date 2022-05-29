@@ -1,6 +1,7 @@
 {
-  "manifest_version": 2,
-  "version": "0.3.0",
+  "manifest_version": 3,
+  "version": "0.3.1",
+  "minimum_chrome_version": "102",
   "name": "MP3 Converter",
   "description": "__MSG_description__",
   "default_locale": "en",
@@ -9,7 +10,7 @@
     "storage",
     "contextMenus"
   ],
-  "optional_permissions": [
+  "optional_host_permissions": [
     "*://*/*"
   ],
   "homepage_url": "https://add0n.com/mp3-converter.html",
@@ -31,5 +32,8 @@
     "512": "data/icons/512.png"
   },
   "offline_enabled": true,
-  "browser_action": {}
+  "action": {},
+  "commands": {
+    "_execute_action": {}
+  }
 }
