@@ -7,7 +7,6 @@
   <meta name="viewport" content="width=device-width, initial-scale=1">
 </head>
 <body>
-  <div id="explore" data-cols=5></div>
   <template id="entry"><div class="entry">
     <div>
       <div class="progress" data-filename="Filename" data-filesize="32Mb">
@@ -25,9 +24,12 @@
       <img src="upload.svg" width="64px">
       Click to choose files or drag them to start the conversion. Drop text content to extract links
       <input type="file" multiple id="upload" style="display: none;" accept="audio/*, video/*">
-      <input type="button" id="clipboard" title="Parse content from clipboard">
+      <input type="button" id="clipboard" title="Parse content from clipboard (Ctrl + V or Command + V)">
     </label>
     <div id="entries"></div>
+  </div>
+  <div id="rate" data-hide=true>
+    <a href="#">Rate Me</a>
   </div>
   <div id="tools">
     <label id="quality">Quality <select id="bitrate">
@@ -95,6 +97,6 @@
   <script src="mp3/api.js"></script>
   <script src="mp3/vendor/browser-id3-writer.4.0.0.js"></script>
   <script src="index.js"></script>
-  <script async src="matched.js"></script>
+  <script src="rate.js"></script>
 </body>
 </html>

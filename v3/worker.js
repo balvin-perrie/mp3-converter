@@ -84,6 +84,11 @@ chrome.runtime.onMessage.addListener((request, sender) => {
       contexts: ['action']
     });
     chrome.contextMenus.create({
+      title: 'Usage Preview',
+      id: 'preview',
+      contexts: ['action']
+    });
+    chrome.contextMenus.create({
       title: 'Convert to MP3',
       id: 'convert-media',
       contexts: ['audio', 'video']
@@ -105,6 +110,11 @@ chrome.contextMenus.onClicked.addListener(info => {
   if (info.menuItemId === 'sample') {
     chrome.tabs.create({
       url: 'https://webbrowsertools.com/test-download-with/'
+    });
+  }
+  else if (info.menuItemId === 'preview') {
+    chrome.tabs.create({
+      url: 'https://www.youtube.com/watch?v=j0KeXQDRl_0'
     });
   }
   else if (info.menuItemId === 'convert-media' || info.menuItemId === 'convert-link') {

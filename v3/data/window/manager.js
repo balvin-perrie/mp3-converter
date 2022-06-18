@@ -130,7 +130,7 @@ manager.add = async files => {
         }
       };
       req.onerror = () => {
-        obj.error('cannot fetch url, drop the files to ask for permission');
+        obj.error('Cannot connect to this server. Drop the files to ask for permission or click here for more info', 'faq8');
       };
       req.send();
     }
@@ -158,6 +158,10 @@ document.querySelector('#drag input[type=button]').addEventListener('click', () 
     alert('Failed to read clipboard contents: ', e);
   });
 });
+document.addEventListener('paste', () => {
+  document.querySelector('#drag input[type=button]').click();
+});
+
 {
   document.addEventListener('dragover', e => e.preventDefault());
   document.addEventListener('drop', e => {
@@ -224,10 +228,19 @@ manager.build = (filename, filesize, url) => {
         this.then(blob);
       }
     },
-    error(msg) {
+    error(msg, faq) {
       div.dataset.error = true;
       progress.title = progress.dataset.filesize = msg || 'Error';
       info.textContent = '';
+
+      if (faq) {
+        progress.classList.add('link');
+        progress.onclick = () => {
+          chrome.tabs.create({
+            url: chrome.runtime.getManifest().homepage_url + '#' + faq
+          });
+        };
+      }
     },
     message(msg) {
       info.textContent = msg;

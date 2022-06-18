@@ -102,7 +102,7 @@ manager.on('added', e => {
       e.message('downloading');
       e.controller = mp3.fetch(link, (err, buffer) => {
         if (err) {
-          return e.error(err.messsage);
+          return e.error(err.messsage, 'faq8');
         }
         e.message('decoding');
         e.worker = mp3.convert(buffer, bitrate, e);
@@ -115,12 +115,12 @@ manager.on('added', e => {
         e.message('decoding');
         e.worker = mp3.convert(reader.result, bitrate, e);
       };
-      reader.onerror = m => e.error(m.message);
+      reader.onerror = m => e.error(m.message, 'faq8');
       reader.readAsArrayBuffer(e.file);
     }
   }
   else {
-    e.error('not a media file');
+    e.error('No Media. Click for more info', 'faq7');
   }
 });
 

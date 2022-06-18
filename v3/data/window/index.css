@@ -30,6 +30,7 @@ input[type=file] {
 #drag img {
   min-height: 64px;
 }
+
 @media screen and (max-width: 600px) {
   #drag {
     justify-content: flex-end;
@@ -57,6 +58,7 @@ input[type=file] {
   display: flex;
   overflow: auto;
 }
+
 @media screen and (max-width: 600px) {
   #content {
     flex-direction: column;
@@ -81,6 +83,7 @@ input[type=file] {
 #tools[data-count="2"] #permission {
   display: none;
 }
+
 @media screen and (max-width: 600px) {
   #tools {
     grid-template-columns: 1fr !important;
@@ -110,6 +113,7 @@ input[type=file] {
   cursor: pointer;
   padding: 0 10px;
 }
+
 @media screen and (max-width: 600px) {
   #tools label {
     height: 38px;
@@ -204,6 +208,9 @@ input[type=file] {
   width: 100% !important;
   background-color: #bbf9bb;
 }
+.entry .progress.link {
+  cursor: pointer;
+}
 .entry .progress div[data-error] {
   width: 100% !important;
   background-color: #ff9898;
@@ -224,4 +231,24 @@ input[type=file] {
 
 #ffmpeg {
   display: none;
+}
+
+#rate {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  background-color: #ddedfb;
+}
+#rate[data-hide=true] {
+  display: none;
+}
+#rate a {
+  text-decoration: none;
+  padding: 10px 60px;
+  background-color: #25669d;
+  color: #fff;
+  border-radius: 100vmax;
+  text-align: center;
+  align-self: center;
+  margin: 10px 0;
 }
