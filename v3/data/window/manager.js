@@ -155,7 +155,8 @@ document.querySelector('#drag input[type=button]').addEventListener('click', () 
       alert('there is no link in the dropped text');
     }
   }).catch(e => {
-    alert('Failed to read clipboard contents: ', e);
+    console.warn(e);
+    alert('Failed to read clipboard contents. Use drag and drop instead: ', e);
   });
 });
 document.addEventListener('paste', () => {
