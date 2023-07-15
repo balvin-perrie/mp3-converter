@@ -99,21 +99,25 @@ manager.on('added', e => {
   ) {
     const bitrate = Number(document.getElementById('bitrate').value);
     if (link) {
-      e.message('downloading');
-      e.controller = mp3.fetch(link, (err, buffer) => {
+      e.message('downloading...');
+      e.controller = mp3.fetch(link, (err, buffer, type) => {
         if (err) {
           return e.error(err.messsage, 'faq8');
         }
-        e.message('decoding');
-        e.worker = mp3.convert(buffer, bitrate, e);
+        e.message('decoding...');
+        e.worker = mp3.convert({buffer, type}, bitrate, e);
       });
     }
     else {
-      e.message('reading');
+      e.message('reading...');
       const reader = new FileReader();
       reader.onload = () => {
-        e.message('decoding');
-        e.worker = mp3.convert(reader.result, bitrate, e);
+        e.message('decoding...');
+
+        e.worker = mp3.convert({
+          buffer: reader.result,
+          type: e.file.type
+        }, bitrate, e);
       };
       reader.onerror = m => e.error(m.message, 'faq8');
       reader.readAsArrayBuffer(e.file);

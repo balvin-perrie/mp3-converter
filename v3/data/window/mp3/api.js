@@ -47,7 +47,7 @@ window.addEventListener('message', ({data}) => {
   }
 });
 
-mp3.convert = (buffer, bitrate = 256, obj) => {
+mp3.convert = ({buffer, type}, bitrate = 256, obj) => {
   const worker = new Worker('mp3/worker.js');
 
   const audioCtx = new (window.AudioContext || window.webkitAudioContext)();
@@ -56,7 +56,7 @@ mp3.convert = (buffer, bitrate = 256, obj) => {
   (USE_NATIVE ? audioCtx.decodeAudioData(buffer) : Promise.reject(Error('user_abort'))).catch(async e => {
     return await mp3.decoder(backup, obj, e);
   }).then(buffer => {
-    obj.message('encoding');
+    obj.message('encoding...');
     const channels = buffer.numberOfChannels;
     const msg = {
       method: 'convert'
@@ -64,23 +64,40 @@ mp3.convert = (buffer, bitrate = 256, obj) => {
     msg.channels = channels;
     msg.sampleRate = buffer.sampleRate;
     msg.length = buffer.length;
-
-    msg.left = buffer.getChannelData(0);
     msg.bitrate = bitrate;
-    if (channels > 1) {
-      msg.right = buffer.getChannelData(1);
+
+    // find max value in data channels
+    let max = 1;
+    for (let n = 0; n < channels; n += 1) {
+      max = Math.max(max, buffer.getChannelData(n).reduce((p, c) => Math.abs(c) > p ? Math.abs(c) : p, 1));
     }
+    msg.max = max;
+
     worker.onmessage = e => {
-      const {method} = e.data;
+      const {method, start, end} = e.data;
       if (method === 'progress') {
         obj.progress(e.data.value);
       }
       else if (method === 'mp3') {
         obj.done(e.data.blob);
+        worker.terminate();
+      }
+      else if (method === 'read-chunk') {
+        const msg = {
+          method: 'chunk',
+          left: buffer.getChannelData(0).slice(start, end)
+        };
+        if (channels > 1) {
+          msg.right = buffer.getChannelData(1).slice(start, end);
+        }
+        worker.postMessage(msg);
       }
     };
     worker.postMessage(msg);
-  }).catch(e => obj.error(e.message));
+  }).catch(e => {
+    worker.terminate();
+    obj.error(e.message);
+  });
 
   return worker;
 };
