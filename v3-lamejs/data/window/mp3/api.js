@@ -79,6 +79,7 @@ mp3.convert = ({buffer, type}, bitrate = 256, obj) => {
         obj.progress(e.data.value);
       }
       else if (method === 'mp3') {
+        obj.message('done!');
         obj.done(e.data.blob);
         worker.terminate();
       }

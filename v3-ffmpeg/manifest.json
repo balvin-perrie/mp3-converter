@@ -1,0 +1,41 @@
+{
+  "manifest_version": 3,
+  "version": "0.4.0",
+  "name": "MP3 Converter",
+  "description": "__MSG_description__",
+  "default_locale": "en",
+  "permissions": [
+    "downloads",
+    "storage",
+    "contextMenus"
+  ],
+  "optional_host_permissions": [
+    "*://*/*"
+  ],
+  "homepage_url": "https://webextension.org/listing/mp3-converter.html",
+  "background": {
+    "service_worker": "worker.js"
+  },
+  "sandbox": {
+    "pages": [
+      "/data/window/mp3/decoder/index.html"
+    ]
+  },
+  "icons": {
+    "16": "/data/icons/16.png",
+    "32": "/data/icons/32.png",
+    "48": "/data/icons/48.png",
+    "64": "/data/icons/64.png",
+    "128": "/data/icons/128.png",
+    "256": "/data/icons/256.png",
+    "512": "/data/icons/512.png"
+  },
+  "offline_enabled": true,
+  "action": {},
+  "content_security_policy": {
+    "extension_pages": "script-src 'self' 'wasm-unsafe-eval'; object-src 'self'"
+  },
+  "commands": {
+    "_execute_action": {}
+  }
+}
