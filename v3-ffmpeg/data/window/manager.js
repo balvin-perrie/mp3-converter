@@ -14,11 +14,46 @@ const manager = {
 };
 window.manager = manager;
 
-const permission = links => new Promise(resolve => {
-  chrome.runtime.sendMessage({
-    method: 'permission',
-    links
-  }, resolve);
+const permission = (links, user = false) => new Promise(resolve => {
+  const origins = [];
+  links.forEach(link => {
+    try {
+      origins.push('*://' + (new URL(link)).hostname + '/*');
+    }
+    catch (e) {}
+  });
+
+  chrome.permissions.contains({
+    origins
+  }, g => {
+    if (g) {
+      resolve(true);
+    }
+    else {
+      chrome.permissions.request({
+        origins
+      }, g => {
+        console.log(user, chrome.runtime.lastError);
+        if (g) {
+          resolve(g);
+        }
+        else if (user === false) {
+          const dialog = document.querySelector('dialog');
+          dialog.querySelector('#hostnames').textContent = origins.join(', ');
+          dialog.querySelector('input').onclick = () => chrome.permissions.request({
+            origins
+          }, g => {
+            console.log(user, chrome.runtime.lastError);
+            resolve(g);
+          });
+          dialog.showModal();
+        }
+        else {
+          resolve(g);
+        }
+      });
+    }
+  });
 });
 
 const extract = content => {

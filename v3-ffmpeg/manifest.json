@@ -1,6 +1,6 @@
 {
   "manifest_version": 3,
-  "version": "0.4.0",
+  "version": "0.4.1",
   "name": "MP3 Converter",
   "description": "__MSG_description__",
   "default_locale": "en",
@@ -14,7 +14,8 @@
   ],
   "homepage_url": "https://webextension.org/listing/mp3-converter.html",
   "background": {
-    "service_worker": "worker.js"
+    "service_worker": "worker.js",
+    "scripts": ["context.js", "worker.js"]
   },
   "sandbox": {
     "pages": [
@@ -37,5 +38,11 @@
   },
   "commands": {
     "_execute_action": {}
+  },
+  "browser_specific_settings": {
+    "gecko": {
+      "id": "{5c312ded-2df0-4a55-9cfd-abf2b3b26a67}",
+      "strict_min_version": "115.0"
+    }
   }
 }

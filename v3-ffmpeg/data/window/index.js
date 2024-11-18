@@ -137,11 +137,14 @@ chrome.runtime.onMessage.addListener((request, sender, response) => {
   }
 });
 
-if (args.has('link')) {
-  manager.add([{
-    link: args.get('link')
-  }]);
-}
+document.addEventListener('DOMContentLoaded', () => {
+  if (args.has('link')) {
+    manager.add([{
+      link: args.get('link')
+    }]);
+  }
+});
+
 
 document.getElementById('global-permission').addEventListener('click', () => chrome.permissions.request({
   permissions: [],

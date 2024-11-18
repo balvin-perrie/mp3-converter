@@ -254,3 +254,7 @@ input[type=file] {
   align-self: center;
   margin: 10px 0;
 }
+form[method="dialog"] {
+  display: flex;
+  justify-content: end;
+}
