@@ -2,6 +2,11 @@
 
 {
   const onStartup = () => {
+    if (onStartup.done) {
+      return;
+    }
+    onStartup.done = true;
+
     chrome.contextMenus.create({
       title: 'Open a Sample',
       id: 'sample',

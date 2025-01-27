@@ -107,10 +107,11 @@
     </label>
   </div>
   <dialog>
-    <p>Here are the hostnames for downloading media:</p>
+    <p>We need your permission to download media from the following hostnames:</p>
     <p id="hostnames"></p>
     <form method="dialog">
-      <input type="submit" value="Proceed with Permission">
+      <input type="submit" value="Close" data-cmd="close">
+      <input type="submit" value="Proceed with Permission" autofocus data-cmd="proceed">
     </form>
   </dialog>
 

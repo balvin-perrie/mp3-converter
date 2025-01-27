@@ -33,19 +33,26 @@ const permission = (links, user = false) => new Promise(resolve => {
       chrome.permissions.request({
         origins
       }, g => {
-        console.log(user, chrome.runtime.lastError);
+        console.info(user, chrome.runtime.lastError);
         if (g) {
           resolve(g);
         }
         else if (user === false) {
           const dialog = document.querySelector('dialog');
           dialog.querySelector('#hostnames').textContent = origins.join(', ');
-          dialog.querySelector('input').onclick = () => chrome.permissions.request({
-            origins
-          }, g => {
-            console.log(user, chrome.runtime.lastError);
-            resolve(g);
-          });
+          dialog.onsubmit = e => {
+            if (e.submitter?.dataset?.cmd === 'proceed') {
+              chrome.permissions.request({
+                origins
+              }, g => {
+                console.info(user, chrome.runtime.lastError);
+                resolve(g);
+              });
+            }
+            else {
+              resolve();
+            }
+          };
           dialog.showModal();
         }
         else {
