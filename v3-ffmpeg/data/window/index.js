@@ -81,13 +81,22 @@ manager.on('added', e => {
       type: 'audio/mp3'
     });
     const url = URL.createObjectURL(blob);
-    chrome.downloads.download({
-      filename: e.file.name.replace(/\.[^.]*/, '') + '.mp3',
-      url
-    }, id => {
-      window.setTimeout(() => URL.revokeObjectURL(url), 10000);
-      e.downloadId(id);
-    });
+    const filename = e.file.name.replace(/\.[^.]*/, '') + '.mp3';
+    if (typeof chrome.downloads !== 'undefined') {
+      chrome.downloads.download({
+        filename,
+        url
+      }, id => {
+        window.setTimeout(() => URL.revokeObjectURL(url), 10000);
+        e.downloadId(id);
+      });
+    }
+    else {
+      const a = document.createElement('a');
+      a.href = url;
+      a.download = filename;
+      a.click();
+    }
   };
   if (
     type.startsWith('audio/') ||

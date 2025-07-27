@@ -1,5 +1,5 @@
 chrome.storage.local.get({
-  'rate': true,
+  'rate': !/apple/i.test(navigator.vendor),
   'crate': 0
 }, prefs => {
   const b = prefs['rate'] === false || prefs.crate < 5 || Math.random() < 0.5;

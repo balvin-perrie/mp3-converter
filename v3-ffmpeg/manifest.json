@@ -9,18 +9,13 @@
     "storage",
     "contextMenus"
   ],
-  "optional_host_permissions": [
+  "host_permissions": [
     "*://*/*"
   ],
   "homepage_url": "https://webextension.org/listing/mp3-converter.html",
   "background": {
     "service_worker": "worker.js",
     "scripts": ["context.js", "worker.js"]
-  },
-  "sandbox": {
-    "pages": [
-      "/data/window/mp3/decoder/index.html"
-    ]
   },
   "icons": {
     "16": "/data/icons/16.png",
@@ -37,12 +32,14 @@
     "extension_pages": "script-src 'self' 'wasm-unsafe-eval'; object-src 'self'"
   },
   "commands": {
-    "_execute_action": {}
+    "_execute_action": {
+      "description": "Click the action button"
+    }
   },
   "browser_specific_settings": {
     "gecko": {
       "id": "{5c312ded-2df0-4a55-9cfd-abf2b3b26a67}",
-      "strict_min_version": "115.0"
+      "strict_min_version": "128.0"
     }
   }
 }

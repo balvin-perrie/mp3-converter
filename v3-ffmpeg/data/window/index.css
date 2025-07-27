@@ -43,7 +43,7 @@ input[type=file] {
   }
 }
 #clipboard {
-  background: url(clipboard.svg) center center no-repeat;
+  background: url("clipboard.svg") center center no-repeat;
   width: 48px;
   height: 48px;
   background-size: 48px 48px;
@@ -96,6 +96,7 @@ input[type=file] {
   height: 48px;
   display: inline-flex;
   align-items: center;
+  gap: 5px;
   padding: 0 10px;
 }
 #tools label span {
@@ -132,6 +133,13 @@ input[type=file] {
   overflow: hidden;
   text-overflow: ellipsis;
 }
+
+@supports (-webkit-hyphens: none) {
+  #tools select {
+    height: unset;
+  }
+}
+
 #tools select:-moz-focusring {
   color: transparent;
   text-shadow: 0 0 0 #000;
