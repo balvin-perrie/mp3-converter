@@ -1,5 +1,10 @@
 /* global FFmpegWASM, manager */
 
+const OPTIONS = {
+  coreURL: 'mp3/external/ffmpeg-core.js',
+  wasmURL: 'mp3/external/ffmpeg-core.wasm'
+};
+
 self.Worker = new Proxy(Worker, {
   construct(Target, args) {
     args[0] = 'worker.js';
@@ -8,18 +13,31 @@ self.Worker = new Proxy(Worker, {
   }
 });
 
-const ffmpeg = new FFmpegWASM.FFmpeg();
-
-const options = {
-  coreURL: 'mp3/external/ffmpeg-core.js',
-  wasmURL: 'mp3/external/ffmpeg-core.wasm'
+const tt = msg => {
+  if (msg) {
+    document.title = msg;
+  }
+  else if (tt.version) {
+    document.title = 'Media Converter (based on ffmpeg ' + tt.version + ')';
+  }
+  else {
+    document.title = 'Media Converter';
+  }
 };
 
-const prepare = () => ffmpeg.load(options).then(() => ffmpeg.createDir('/work'));
+manager.ready();
 
-prepare().then(() => {
-  manager.ready();
-});
+{
+  const ffmpeg = new FFmpegWASM.FFmpeg();
+  const observe = e => {
+    if (e.message.includes('ffmpeg version')) {
+      tt.version = e.message.split('ffmpeg version ')[1].split(' ')[0];
+      tt();
+    }
+  };
+  ffmpeg.on('log', observe);
+  ffmpeg.load(OPTIONS).then(() => ffmpeg.exec(['-version']).then(() => ffmpeg.terminate()));
+}
 
 const mp3 = {};
 mp3.fetch = async (url, signal, obj) => {
@@ -64,13 +82,16 @@ mp3.fetch = async (url, signal, obj) => {
       jobs.push(args);
       return;
     }
+    busy = true;
 
-    // after termination
-    if (ffmpeg.loaded === false) {
-      await prepare();
-    }
+    const ffmpeg = new FFmpegWASM.FFmpeg();
+
 
     const [{file, signal}, bitrate = 'v1', obj] = args;
+    tt('Working on ' + file.name + '. ' + jobs.length + ' jobs left.');
+    obj.focus();
+
+    await ffmpeg.load(OPTIONS);
 
     const terminate = () => ffmpeg.terminate();
     signal.addEventListener('abort', terminate);
@@ -87,17 +108,12 @@ mp3.fetch = async (url, signal, obj) => {
       }
     };
 
-    busy = true;
-    try {
-      await ffmpeg.unmount('/work');
-    }
-    catch (e) {}
-
     // in case a job is removed before processing
     if (signal.aborted === false) {
       try {
         obj.message('transferring...');
 
+        await ffmpeg.createDir('/work');
         await ffmpeg.mount('WORKERFS', {
           files: [file]
         }, '/work');
@@ -119,7 +135,8 @@ mp3.fetch = async (url, signal, obj) => {
         await ffmpeg.exec(['-i', '/work/' + file.name, ...bt, '/output.mp3']);
 
         const data = await ffmpeg.readFile('/output.mp3');
-        await ffmpeg.deleteFile('/output.mp3');
+        await ffmpeg.terminate();
+
         obj.done(data);
 
         obj.message('done!');
@@ -131,14 +148,15 @@ mp3.fetch = async (url, signal, obj) => {
     }
 
     signal.removeEventListener('abort', terminate);
-    ffmpeg.off('progress', progress);
-    ffmpeg.off('log', observe);
 
     busy = false;
 
     const next = jobs.shift();
     if (next) {
       mp3.convert(...next);
+    }
+    else {
+      tt();
     }
   };
 }

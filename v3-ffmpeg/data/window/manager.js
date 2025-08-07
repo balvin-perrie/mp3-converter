@@ -292,6 +292,12 @@ manager.build = (filename, filesize, url) => {
     message(msg) {
       info.textContent = msg;
     },
+    focus() {
+      div.scrollIntoView({
+        behavior: 'smooth',
+        block: 'center'
+      });
+    },
     size: s => progress.dataset.filesize = s,
     name: s => progress.dataset.filename = s,
     downloadId: downloadId => progress.dataset.downloadId = downloadId
